@@ -24,10 +24,9 @@ namespace Ticketing.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
         {
-            var result = await _context.Tickets.Include(x => x.SubTickets)                             
-                                               .Include(x => x.Organization)
-                                               .Include(x => x.Status)
-                                               .Include(x => x.Priority).ToListAsync();
+            var result = await _context.Tickets.Include(x => x.SubTickets)
+                                               .ToListAsync();
+                                               
             return result;
         }
 
@@ -37,9 +36,8 @@ namespace Ticketing.Controllers
         {
             //is it correct?
             var ticket = await _context.Tickets.Include(x => x.SubTickets)
-                                               .Include(x => x.Organization)
-                                               .Include(x => x.Status)
-                                               .Include(x => x.Priority).FirstAsync(x => x.Id == id);
+                                               .FirstAsync(x => x.Id == id);
+                                               
 
             if (ticket == null)
             {
