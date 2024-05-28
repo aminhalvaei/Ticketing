@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="login_style.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div id="loginModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+            <img src="/frontend/assets/Sanpad-LOGO.png" alt="Logo" class="mx-auto mb-4 w-20 h-20">
+            <h2 class="text-xl font-bold my-8">سامانه تیکتینگ سنپاد</h2>
+            <hr class="border-black">
+            <h3 class="text-lg font-semibold mt-4 mb-4">ورود به سیستم</h3>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label for="username" class="block mb-2">نام کاربری</label>
+                    <input type="text" id="username" name="username" class="w-full p-2 border rounded" required>
+                </div>
+                <div>
+                    <label for="password" class="block mb-2">رمز عبور</label>
+                    <input type="password" id="password" name="password" class="w-full p-2 border rounded" required>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="showPassword" class="ml-2">
+                    <label for="showPassword">نمایش رمز عبور</label>
+                </div>
+                <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">ورود</button>
+            </form>
+        </div>
+    </div>
+    <script src="login_handler.js"></script>
+</body>
+</html>
