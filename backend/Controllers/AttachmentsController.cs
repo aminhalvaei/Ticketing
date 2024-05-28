@@ -24,14 +24,14 @@ namespace Ticketing.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Attachment>>> GetAttachments()
         {
-            return await _context.Attachments.ToListAsync();
+            return await _context.Attachments.Include(x =>x.SubTicket).ToListAsync();
         }
 
         // GET: api/Attachments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Attachment>> GetAttachment(int id)
         {
-            var attachment = await _context.Attachments.FindAsync(id);
+            var attachment = await _context.Attachments.Include(x =>x.SubTicket).FirstAsync(x => x.Id == id);
 
             if (attachment == null)
             {

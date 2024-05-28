@@ -24,14 +24,16 @@ namespace Ticketing.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OrganizationUser>>> GetOrganizationUsers()
         {
-            return await _context.OrganizationUsers.ToListAsync();
+            return await _context.OrganizationUsers.Include(x => x.User)
+                                                   .Include(x => x.Organization).ToListAsync();
         }
 
         // GET: api/OrganizationUsers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OrganizationUser>> GetOrganizationUser(string id)
         {
-            var organizationUser = await _context.OrganizationUsers.FindAsync(id);
+            var organizationUser = await _context.OrganizationUsers.Include(x => x.User)
+                                                                   .Include(x => x.Organization).FirstAsync(x => x.UserId == id);
 
             if (organizationUser == null)
             {

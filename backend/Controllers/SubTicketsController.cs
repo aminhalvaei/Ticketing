@@ -24,7 +24,9 @@ namespace Ticketing.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SubTicket>>> GetSubTickets()
         {
-            var result = await _context.SubTickets.Include(x => x.Attachments).Include(x => x.Ticket).ToListAsync();
+            var result = await _context.SubTickets.Include(x => x.Ticket)
+                                                  .Include(x => x.User)
+                                                  .Include(x => x.Attachments).ToListAsync();
             return result;
         }
 
@@ -32,7 +34,9 @@ namespace Ticketing.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<SubTicket>> GetSubTicket(int id)
         {
-            var subTicket = await _context.SubTickets.Include(x => x.Attachments).FirstAsync(x => x.Id == id);
+            var subTicket = await _context.SubTickets.Include(x => x.Ticket)
+                                                     .Include(x => x.User)
+                                                     .Include(x => x.Attachments).FirstAsync(x => x.Id == id);
 
             if (subTicket == null)
             {
