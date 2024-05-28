@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const apiUrl = 'https://localhost:7169/api/Tickets';
 
+    // Fetch tickets and populate the table
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching tickets:', error));
 
+    // Ticket modal elements and functions
     const ticketModal = document.getElementById('ticketModal');
     const ticketModalClose = document.getElementsByClassName('close')[0];
     const messagesContainer = document.getElementById('messagesContainer');
@@ -38,26 +40,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const newTicketAttachment = document.getElementById('newTicketAttachment');
     const newTicketPriority = document.getElementById('newTicketPriority');
 
+    const loginModal = document.getElementById('loginModal');
+    const loginButton = document.getElementById('loginButton');
+
     let currentTicket = null;
 
-    ticketModalClose.onclick = function () {
+    ticketModalClose.onclick = function() {
         ticketModal.style.display = 'none';
     }
 
-    newTicketModalClose.onclick = function () {
-        newTicketModal.style.display = 'none';
-    }
-
-    newTicketButton.onclick = function () {
+    newTicketButton.onclick = function() {
         newTicketModal.style.display = 'block';
     }
 
-    window.onclick = function (event) {
-        if (event.target == ticketModal) {
+    newTicketModalClose.onclick = function() {
+        newTicketModal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target === ticketModal) {
             ticketModal.style.display = 'none';
-        }
-        if (event.target == newTicketModal) {
+        } else if (event.target === newTicketModal) {
             newTicketModal.style.display = 'none';
+        } else if (event.target === loginModal) {
+            loginModal.style.display = 'none';
         }
     }
 
@@ -76,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ticketModal.style.display = 'block';
     }
 
-    sendMessageButton.onclick = function () {
+    sendMessageButton.onclick = function() {
         const newMessage = {
             ticketId: currentTicket.id,
             message: newMessageInput.value,
@@ -100,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
         attachmentInput.value = '';
     }
 
-    createTicketButton.onclick = function () {
+    createTicketButton.onclick = function() {
         const newTicket = {
             title: newTicketTitle.value,
             message: newTicketMessage.value,
@@ -119,5 +125,15 @@ document.addEventListener('DOMContentLoaded', () => {
         newTicketMessage.value = '';
         newTicketAttachment.value = '';
         newTicketPriority.value = '1';
+    }
+
+    // Show login modal on page load
+    window.onload = function() {
+        loginModal.style.display = 'block';
+    }
+
+    loginButton.onclick = function() {
+        // Close the login modal (for now, no authentication logic is implemented)
+        loginModal.style.display = 'none';
     }
 });
