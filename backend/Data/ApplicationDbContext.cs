@@ -5,86 +5,85 @@ using Ticketing.Models;
 
 public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
+      public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+          : base(options)
+      {
+      }
 
-    public DbSet<Organization> Organizations { get; set; }
-    public DbSet<OrganizationUser> OrganizationUsers { get; set; }
-    public DbSet<Ticket> Tickets { get; set; }
-    public DbSet<Status> Statuses { get; set; }
-    public DbSet<Priority> Priorities { get; set; }
-    public DbSet<SubTicket> SubTickets { get; set; }
-    public DbSet<Attachment> Attachments { get; set; }
-    
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
+      public DbSet<Organization> Organizations { get; set; }
+      public DbSet<OrganizationUser> OrganizationUsers { get; set; }
+      public DbSet<Ticket> Tickets { get; set; }
+      public DbSet<Status> Statuses { get; set; }
+      public DbSet<Priority> Priorities { get; set; }
+      public DbSet<SubTicket> SubTickets { get; set; }
+      public DbSet<Attachment> Attachments { get; set; }
 
-    }
+      protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+      {
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
+      }
 
-        // Configure relationships
+      protected override void OnModelCreating(ModelBuilder builder)
+      {
+            base.OnModelCreating(builder);
 
-        builder.Entity<OrganizationUser>(entity =>
-        {
-            entity.HasKey(ou => new { ou.UserId, ou.OrganizationId });
+            // Configure relationships
 
-            entity.HasOne(ou => ou.User)
-                  .WithMany(u => u.OrganizationUsers)
-                  .HasForeignKey(ou => ou.UserId);
+            builder.Entity<OrganizationUser>(entity =>
+            {
+                  entity.HasKey(ou => new { ou.UserId, ou.OrganizationId });
 
-            entity.HasOne(ou => ou.Organization)
-                  .WithMany(o => o.OrganizationUsers)
-                  .HasForeignKey(ou => ou.OrganizationId);
-        });
+                  entity.HasOne(ou => ou.User)
+                    .WithMany(u => u.OrganizationUsers)
+                    .HasForeignKey(ou => ou.UserId);
 
-        builder.Entity<Ticket>(entity =>
-        {
-            entity.HasMany(s => s.SubTickets).WithOne(a => a.Ticket);
+                  entity.HasOne(ou => ou.Organization)
+                    .WithMany(o => o.OrganizationUsers)
+                    .HasForeignKey(ou => ou.OrganizationId);
+            });
 
-            entity.HasKey(u => u.Id);
+            builder.Entity<Ticket>(entity =>
+            {
 
-            entity.HasOne(u => u.Status)
-                  .WithMany(s => s.Tickets)
-                  .HasForeignKey(u => u.StatusId);
+                  entity.HasKey(u => u.Id);
 
-            entity.HasOne(u => u.Priority)
-                  .WithMany(s => s.Tickets)
-                  .HasForeignKey(u => u.PriorityId);
+                  entity.HasOne(u => u.Status)
+                    .WithMany(s => s.Tickets)
+                    .HasForeignKey(u => u.StatusId);
 
-            entity.HasOne(u => u.Organization)
-                  .WithMany(s => s.Tickets)
-                  .HasForeignKey(u => u.OrganizationId);
+                  entity.HasOne(u => u.Priority)
+                    .WithMany(s => s.Tickets)
+                    .HasForeignKey(u => u.PriorityId);
 
-        });
+                  entity.HasOne(u => u.Organization)
+                    .WithMany(s => s.Tickets)
+                    .HasForeignKey(u => u.OrganizationId);
 
-        builder.Entity<SubTicket>(entity =>
-        {
-            entity.HasKey(u => u.Id);
+            });
 
-            entity.HasOne(u => u.User)
-                  .WithMany(s => s.SubTickets)
-                  .HasForeignKey(u => u.UserId);
+            builder.Entity<SubTicket>(entity =>
+            {
+                  entity.HasKey(u => u.Id);
 
-            entity.HasOne(u => u.Ticket)
-                  .WithMany(t => t.SubTickets)
-                  .HasForeignKey(u => u.TicketId);
+                  entity.HasOne(u => u.User)
+                    .WithMany(s => s.SubTickets)
+                    .HasForeignKey(u => u.UserId);
 
-        });
+                  entity.HasOne(u => u.Ticket)
+                    .WithMany(t => t.SubTickets)
+                    .HasForeignKey(u => u.TicketId);
 
-        builder.Entity<Attachment>(entity =>
-        {
-            entity.HasKey(u => u.Id);
+            });
 
-            entity.HasOne(u => u.SubTicket)
-                  .WithMany(s => s.Attachments)
-                  .HasForeignKey(u => u.SubTicketId);
-        });
+            builder.Entity<Attachment>(entity =>
+            {
+                  entity.HasKey(u => u.Id);
+
+                  entity.HasOne(u => u.SubTicket)
+                    .WithMany(s => s.Attachments)
+                    .HasForeignKey(u => u.SubTicketId);
+            });
 
 
-    }
+      }
 }
